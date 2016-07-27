@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title> SMALL MULTIPLE </title>
+</head>
+
+<body>
+    <script src="js/p5.js"></script>
+    <script src="js/lib/p5.collide.js"></script>
+    <script>
+        var hit = false;
+        var poly = []; //store the vertices for our polygon
+        var balls = [];
+        function setup() {
+            createCanvas(500, 500);
+            poly[0] = createVector(123, 231); // set X/Y positions
+            poly[1] = createVector(10, 111);
+            poly[2] = createVector(20, 23);
+            poly[3] = createVector(390, 33);
+            
+            
+            
+            for(var i =0; i< 310; i++){
+                var randomX = random(0, width);
+                var randomY = random(0, height);
+                var b = new Ball(randomX, randomY);
+                balls.push(b);
+            }
+            
+        }
+
+        function draw() {
+            background(255);
+
+            //draw the polygon from the created Vectors above.
+            noStroke();
+            beginShape();
+            for (var i = 0; i < poly.length; i++) {
+                vertex(poly[i].x, poly[i].y);
+            }
+            endShape(CLOSE);
+            stroke(0);
+            for(var i = 0; i < balls.length; i++){
+                var b = balls[i];
+                b.update();
+                b.display();
+                
+            }
+//            ellipse(mouseX, mouseY, 10, 10); //put a small ellipse on our point.
+
+            hit = collidePointPoly(mouseX, mouseY, poly); //3rd parameter is an array of vertices.
+
+            
+        }
+        
+        class Ball{
+            constructor(tx, ty){
+                this.x = tx;
+                this.y = ty;
+                this.dir = 5;
+            }
+            
+            display(){
+                ellipse(this.x, this.y, 10, 10);
+            }
+            update(){
+                var hit = collidePointPoly(this.x, this.y, poly);
+                if(hit === true){
+                    this.dir = this.dir * -1;
+                }
+                if(this.x < 0 || this.x > width){
+                    this.dir = this.dir *-1;
+                }
+                if(this.y < 0 || this.y > height){
+                    this.dir = this.dir *-1;
+                }
+                this.x += this.dir;
+                this.y += this.dir;
+            }
+        }
+        
+        function mousePressed(){
+            console.log("noLoop!!");
+            noLoop();   
+        }
+    </script>
+</body>
+
+</html>

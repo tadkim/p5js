@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title> vector </title>
+</head>
+
+<body>
+    <script src="js/p5.js"></script>
+    <script>
+    var title = '벡터Attractor';
+    var ballNum = 100;
+    var ballArray = [];
+        
+    function setup() {
+        createCanvas(500, 500);
+        background(0,20);
+       
+        for(var i =0; i < ballNum; i++){
+            var b = new Ball(random(0, width), random(0, width));
+            ballArray.push(b);
+        }
+     
+    }
+        
+        function draw(){
+//            background(255, 30);
+            for(var i = 0 ; i < ballArray.length; i++){
+                var b = ballArray[i];
+                b.update();
+                b.checkEdges();
+                b.display();
+            }
+        }
+        
+    class Ball{
+        
+        constructor(tx, ty){
+            this.location = createVector(tx, ty);
+            this.velocity = createVector(0, 0);
+            this.topSpeed = 4;
+//            this.mouse = createVector(0, 0);
+
+        }
+        
+        update(){
+            
+            this.mouse = createVector(mouseX, mouseY);
+            this.dir = p5.Vector.sub(this.mouse, this.location);
+            //벡터를 정규화
+            this.dir.normalize();
+            //크기를 변경 : 0.5 곱
+            this.dir.mult(0.5);
+            
+            //만들어진 벡터를 가속도로 설정
+            this.acceleration = this.dir;
+            
+            
+            //실제로 물체를 움직는 코드
+            //가속도로 속도를 변경하고, 속도로 위치를 변경
+            this.velocity.add(this.acceleration);
+            this.velocity.limit(this.topSpeed);
+            this.location.add(this.velocity);
+        }
+        display(){
+            stroke(0);
+            fill(175);
+            ellipse(this.location.x, this.location.y, 16, 16);
+        }
+        
+        checkEdges(){
+            if(this.location.x > width) {
+                this.location.x = 0;
+            } else if(this.location.x < 0){
+                this.location.x = width;
+            }
+            
+            if(this.location.y > height){
+                this.location.y = 0;
+            } else if(this.location.y < 0){
+                this.location.y = height;
+            }
+        }
+    }
+        
+        
+        function keyTyped(){
+            if(key === 's'){
+                var years = year()+'';
+                var saveinfo = years.substring(2,4) +
+                    month() +
+                    day() + '_';
+                save(saveinfo + title);
+            }
+        }
+        
+        function mousePressed(){
+            noLoop();
+        }
+        
+    </script>
+</body>
+
+</html>

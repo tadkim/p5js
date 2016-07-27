@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title> PROJECT </title>
+</head>
+
+<body>
+<!--    <script src="//cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.2/p5.js"></script>-->
+    <script src="js/p5.js"></script>
+<!--    <script src="data/ssolinda.js"></script>-->
+    <script>
+    let canvasWidth = 500;
+    let canvasHeight = 500;
+    let steps = 10;
+    let quantity = 20;
+    let gridGap;
+
+    function setup() {
+        createCanvas(canvasWidth, canvasHeight);
+        gridGap = canvasWidth / steps;
+        colorMode(HSL);
+        makeGrid(); //그리드 함수
+
+    }
+
+
+
+
+
+    //그리드 x,y점 배열 만드는 함수
+    function makeGrid() {
+        console.log("start makeGrid");
+
+        //for yumm
+        for(var i = 0; i< quantity; i++){
+            var currentX = 20*i+10;
+            
+            for(var j = 0; j < quantity; j++){
+                
+                var currentY = 20*j+10;
+                var randomValue = Math.round(random(0,2));
+                
+
+                if(randomValue === 0){
+                    patternA(currentX, currentY);
+                }else if(randomValue === 1){
+                    patternB(currentX, currentY);
+                }else{
+                    patternC(currentX, currentY);
+                }
+
+            }
+        }
+    }
+
+
+
+
+    //패턴A : 검은 원
+
+    function patternA(x,y){
+        push();
+        noStroke();
+        fill(0,0,20);
+        let circleSize = canvasWidth /30;
+        ellipse(x,y,circleSize,circleSize);
+        pop();
+    }
+
+    //패턴B : 하늘색 엑스
+    function patternB(x,y){
+        let xSize = canvasWidth / 50;
+        let ySize = canvasWidth / 50;
+        push();
+        stroke(255,100,70);
+        strokeWeight(3);
+        line(x-xSize,y-xSize,x+xSize,y+ySize);
+        line(x-xSize,y+xSize,x+xSize,y-ySize);
+        pop();
+    }
+
+    //패턴C : 빨간 대각선
+    function patternC(x,y){
+        let xSize = canvasWidth / 50;
+        let ySize = canvasWidth / 50;
+        push();
+        stroke(350,100,70);
+        strokeWeight(3);
+        line(x-xSize,y+xSize,x+xSize,y-ySize);
+        pop();
+    }
+</script>
+    
+    
+</body>
+
+</html>

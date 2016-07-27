@@ -1,0 +1,258 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title> PROJECT </title>
+</head>
+
+<body>
+<!--    <script src="//cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.2/p5.js"></script>-->
+    <script src="js/p5.js"></script>
+    <script src="data/ssolinda.js"></script>
+    
+    
+    <script>
+        
+        var w = 800;
+        var h = 800;
+        var margin = 100;
+        
+        var xAxis = {x:w-margin, y: margin};
+        var yAxis = {x:margin, y:h-margin};
+        var axisR = 30;
+        
+        var inits = { gap:10, gridX:0, gridY:0, margin:10 };
+        
+        
+        
+        var xLen = 30;
+        var yLen = 30;
+        
+        // 다차원 배열 생성 **************************
+        var arrayList = new Array(xLen);
+        
+        
+        
+        //P5 SETUP =============================================
+        function setup() {
+            createCanvas(w,h);
+            background(230,230,250);
+            noStroke();
+            translate(inits.margin, inits.margin);
+            scale(2);
+            
+            //다차원 배열을 생성
+            for(var i = 0; i < arrayList.length; i++){
+                arrayList[i] = new Array(yLen);
+                for(var j = 0; j < yLen; j++){
+                    arrayList[i][j] = Math.round(random(0,1));
+                }
+            }
+
+            for(var i = 0; i < xLen; i++){
+                for(var j= 0;  j< yLen; j++){
+                    let stype = 0; //0 = background
+                    let sIndex = [i, j];
+                    
+                    let b = new Ball(j*inits.margin, i*inits.margin, stype, sIndex);
+                    if(arrayList[i][j] == 1){ fill(255); }
+                    else{ fill(0); };
+//                  b.display();  ellipse(j*inits.margin,i*inits.margin,inits.margin,inits.margin);                    
+                }
+            }
+//            makeBtn();
+//            makeGrid();
+        }
+        
+        
+         
+        //MAKE MAP =============================================
+        function makeMap(){
+            
+        }
+        function makeBtn(){
+            fill(0);
+            ellipse(xAxis.x, xAxis.y, axisR, axisR);
+            ellipse(yAxis.x, yAxis.y, axisR, axisR);
+        }
+       
+        
+        function makeDat(){
+            let startX, startY = 0;
+            
+        }
+        
+        //MAKE class =============================================
+        class Ball {
+            //구성
+            constructor(sx, sy, types, index) {
+                this.pos = createVector(sx, sy);
+                
+                this.r = 10;
+                this.types = types;
+                this.index = index;
+            }
+            display() {
+                
+                ellipse(this.x, this.y, this.r, this.r);
+            }
+            display_type(){
+                fill(255);
+                textAlign(CENTER);
+                text(this.types, this.x, (this.y+editor.textSize/2));
+                fill(0);
+            }
+            
+            update(){
+                
+            }
+        }
+        
+        
+        
+        //INTERACTION & EVENT ==================================
+        function mousePressed(){
+            var dx = dist(mouseX, mouseY, xAxis.x, xAxis.y);
+            var dy = dist(mouseX, mouseY, yAxis.x, yAxis.y);
+            
+            if(dx < axisR){ 
+                xLen++;
+                console.log("X축 버튼클릭!");
+                makeGrid();
+            } 
+            if(dy < axisR){
+                yLen++;
+                console.log("Y축 버튼클릭!");
+                makeGrid();
+            }
+//            var d = dist()
+        }
+        
+        
+        function makeGrid(){
+            gridX = 0;
+            gridY = 0;
+            for(var i = 0; i < xLen; i++){
+                ellipse(gridX, gridY, inits.gap, inits.gap);
+                for(var j = 0; j < yLen; j++){
+                    ellipse(gridX, gridY, inits.gap, inits.gap);
+                    gridY = j*inits.gap;
+                }
+                gridX =  i*inits.gap;
+            }
+            
+        }
+    </script>
+
+<!--
+    <script>
+        let ballNums = 100; // ball lengs;
+        let ballsArray =[];
+        
+
+        let editor = { textSize : 10 };
+        let grid = {
+            letterArea : 200,
+            padding: 10
+        };
+
+        function setup() {
+            createCanvas(500, 500);
+            scale(2);
+            background(245);
+            textSize(editor.textSize);
+            
+            makeGrid();
+            
+//            makeJaso();
+            drawGraid();
+            
+            checkLetterArea(); //letter 영역 체크함수
+            
+            
+            
+            
+            console.log(ballsArray.length);
+        }
+        
+        function checkLetterArea(){
+            noFill();
+            stroke(0);
+            rect(0, 0, grid.letterArea, grid.letterArea);
+        }
+        function makeGrid(){
+            fill(0,20);
+            noStroke();
+            
+            for(var i = 0; i < ballNums; i++){
+                
+                let currentX = i*grid.padding;
+                if(currentX > grid.letterArea){ break; }
+
+                let pos = createVector(currentX, 0);
+                
+                for(var j = 0; j < ballNums; j++){
+                    let currentY = j*grid.padding;
+                    if(currentY > grid.letterArea){ break; }
+                    pos.y = currentY;
+                    let balls = new Ball(pos, 0);
+                    ballsArray.push(balls);
+                }
+            }
+        }
+        
+        
+        function makeJaso(){
+            for(var i = 0 ; i < sso.length; i++){
+                let rows = sso[i];
+                let pos = createVector(rows.x, rows.y);
+                let b = new Ball(pos, 1);
+                ballsArray.push(b);
+            }
+        }
+        
+        function drawGraid(){
+            for(var i = 0; i < ballsArray.length; i++){
+                var b = ballsArray[i];
+                b.display();
+                b.display_type();
+            }
+        }
+        
+        
+        
+        
+        function mouse
+        // 객체 구성 클래스 1. 기본형태 1 =================
+        class Ball {
+            //구성
+            constructor(vec, types, index) {
+                this.x = vec.x;
+                this.y = vec.y;
+                this.r = 10;
+                this.types = types;
+                this.index = index;
+            }
+            display() {
+                if(this.types === 0){
+                    fill(240);
+                }else { console.log("jaso");fill(0); }
+                ellipse(this.x, this.y, this.r, this.r);
+            }
+            display_type(){
+                fill(255);
+                textAlign(CENTER);
+                text(this.types, this.x, (this.y+editor.textSize/2));
+                fill(0);
+            }
+            
+            update(){
+                
+            }
+        }
+    </script>
+-->
+</body>
+
+</html>
