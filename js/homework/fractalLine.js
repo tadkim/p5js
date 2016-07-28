@@ -122,21 +122,6 @@ class Flow{
             endShape();   
             stroke(255);
         }
-        /*
-        var x2 = lerp(x1, x4, .25) + this.noiseArea;
-        var y2 = lerp(y1, y4, .25) + this.noiseArea;
-        var x3 = lerp(x1, x4, .75) + this.noiseArea;
-        var y3 = lerp(y1, y4, .75) + this.noiseArea;
-        
-        curveVertex(x1, y1);
-        curveVertex(x1, y1);
-        curveVertex(x2, y2);
-        curveVertex(x3, y3);
-        curveVertex(x4, y4);
-        curveVertex(x4, y4);
-        
-        endShape();
-        */
         
     }
 }
